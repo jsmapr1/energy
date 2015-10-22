@@ -1,0 +1,39 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/opt/nvm/versions/node/v4.1.2/bin/node',
+1 verbose cli   '/usr/local/opt/nvm/versions/node/v4.1.2/bin/npm',
+1 verbose cli   'start' ]
+2 info using npm@2.14.4
+3 info using node@v4.1.2
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info prestart energy@0.0.0
+6 info start energy@0.0.0
+7 verbose unsafe-perm in lifecycle true
+8 info energy@0.0.0 Failed to exec start script
+9 verbose stack Error: energy@0.0.0 start: `node ./bin/www`
+9 verbose stack Exit status 1
+9 verbose stack     at EventEmitter.<anonymous> (/usr/local/opt/nvm/versions/node/v4.1.2/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at EventEmitter.emit (events.js:172:7)
+9 verbose stack     at ChildProcess.<anonymous> (/usr/local/opt/nvm/versions/node/v4.1.2/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+9 verbose stack     at emitTwo (events.js:87:13)
+9 verbose stack     at ChildProcess.emit (events.js:172:7)
+9 verbose stack     at maybeClose (internal/child_process.js:818:16)
+9 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+10 verbose pkgid energy@0.0.0
+11 verbose cwd /Users/jsmapr1/Development/Training/energy
+12 error Darwin 13.4.0
+13 error argv "/usr/local/opt/nvm/versions/node/v4.1.2/bin/node" "/usr/local/opt/nvm/versions/node/v4.1.2/bin/npm" "start"
+14 error node v4.1.2
+15 error npm  v2.14.4
+16 error code ELIFECYCLE
+17 error energy@0.0.0 start: `node ./bin/www`
+17 error Exit status 1
+18 error Failed at the energy@0.0.0 start script 'node ./bin/www'.
+18 error This is most likely a problem with the energy package,
+18 error not with npm itself.
+18 error Tell the author that this fails on your system:
+18 error     node ./bin/www
+18 error You can get their info via:
+18 error     npm owner ls energy
+18 error There is likely additional logging output above.
+19 verbose exit [ 1, true ]

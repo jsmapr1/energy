@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+    h1.
+        #{title}
+    form#formAddBlob(name="addlevel",method="post",action="/levels")
+        p Activity: 
+            input#inputName(type="text", placeholder="ex. John Smith", name="activity")
+        p Category: 
+            input#inputName(type="text", placeholder="ex. John Smith", name="category")
+        p Level:
+            input#inputBadge(type="number", placeholder="ex. 123456", name="level")
+        p Occurrence: 
+            input#inputDob(type="date", name="occurrence")
+        p
+            button#btnSubmit(type="submit") submit

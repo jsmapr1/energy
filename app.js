@@ -3,7 +3,9 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var db = require('./model/db');
-var energyLevel = require('./model/energyLevels');
+var level = require('./model/levels');
+var routes = require('./routes/index');
+var levels = require('./routes/levels');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -25,6 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/levels', levels);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

@@ -17,7 +17,7 @@ router.use(methodOverride(function (req) {
 
 router.route('/')
 .get(function (req, res) {
-  mongoose.model('EnergyLevel').find({}, function (err, levels) {
+  mongoose.model('Level').find({}, function (err, levels) {
     if (err) {
       return console.error(err);
     } else {
@@ -25,7 +25,7 @@ router.route('/')
       res.format({
         html: function () {
           res.render('levels/index', {
-            title: 'EnergyLevels',
+            title: 'Levels',
             'levels': levels
           });
         },
@@ -40,13 +40,13 @@ router.route('/')
 .post(function (req, res) {
   var activity = req.body.activity;
   var levelRating = req.body.level;
-  var occurence = req.body.occurence;
+  var occurrence = req.body.occurrence;
   var category = req.body.category;
   //call the create function for our database
-  mongoose.model('EnergyLevel').create({
+  mongoose.model('Level').create({
     activity: activity,
     level: levelRating,
-    occurence: occurence,
+    occurrence: occurrence,
     category: category
   }, function (err, level) {
     if (err) {
@@ -103,3 +103,125 @@ router.param('id', function (req, res, next, id) {
     } 
   });
 });
+
+router.route('/:id')
+.get(function (req, res) {
+  mongoose.model('Level').findById(req.id, function (err, level) {
+    if (err) {
+      console.log('GET Error: There was a problem retrieving: ' + err);
+    } else {
+      console.log('GET Retrieving ID: ' + level._id);
+      var levelDate = level.occurrence.toISOString();
+      levelDate = levelDate.substring(0, levelDate.indexOf('T'));
+      res.format({
+        html: function () {
+          res.render('levels/show', {
+            'levelDate': levelDate,
+            'level': level
+          });
+        },
+        json: function () {
+          res.json(level);
+        }
+      });
+    }
+  });
+});
+
+router.get('/:id/edit', function (req, res) {
+  //search for the level within Mongo
+  mongoose.model('Level').findById(req.id, function (err, level) {
+    if (err) {
+      console.log('GET Error: There was a problem retrieving: ' + err);
+    } else {
+      //Return the level
+      console.log('GET Retrieving ID: ' + level._id);
+      //format the date properly for the value to show correctly in our edit form
+      var levelDate = level.occurrence.toISOString();
+      levelDate = levelDate.substring(0, levelDate.indexOf('T'));
+      res.format({
+        //HTML response will render the 'edit.jade' template
+        html: function () {
+          res.render('levels/edit', {
+            title: 'Level' + level._id,
+            'levelDate': levelDate,
+            'level': level
+          });
+        },
+        //JSON response will return the JSON output
+        json: function () {
+          res.json(level);
+        }
+      });
+    }
+  });
+});
+
+//PUT to update a level by ID
+router.put('/:id/edit', function (req, res) {
+  // Get our REST or form values. These rely on the 'name' attributes
+  var activity = req.body.activity;
+  var levelRating = req.body.level;
+  var occurrence = req.body.occurrence;
+  var category = req.body.category;
+
+  //find the document by ID
+  mongoose.model('Level').findById(req.id, function (err, level) {
+    //update it
+    level.update({
+      activity: activity,
+      levelRating: levelRating,
+      occurrence: occurrence,
+      category: category
+    }, function (err, levelID) {
+      if (err) {
+        res.send('There was a problem updating the information to the database: ' + err);
+      } else {
+        //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
+        res.format({
+          html: function () {
+            res.redirect('/levels/' + level._id);
+          },
+          //JSON responds showing the updated values
+          json: function () {
+            res.json(level);
+          }
+        });
+      }
+    });
+  });
+});
+
+//DELETE a Level by ID
+router.delete('/:id/edit', function (req, res) {
+  //find level by ID
+  mongoose.model('Level').findById(req.id, function (err, level) {
+    if (err) {
+      return console.error(err);
+    } else {
+      //remove it from Mongo
+      level.remove(function (err, level) {
+        if (err) {
+          return console.error(err);
+        } else {
+          //Returning success messages saying it was deleted
+          console.log('DELETE removing ID: ' + level._id);
+          res.format({
+            //HTML returns us back to the main page, or you can create a success page
+            html: function () {
+              res.redirect('/levels');
+            },
+            //JSON returns the item with the message that is has been deleted
+            json: function () {
+              res.json({message: 'deleted',
+                item: level
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+});
+
+module.exports = router;
