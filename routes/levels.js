@@ -1,4 +1,5 @@
 var express = require('express');
+var debug = require('debug')('energy');
 var router = express.Router();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
@@ -19,8 +20,9 @@ router.route('/')
 .get(function (req, res) {
   mongoose.model('Level').find({}, function (err, levels) {
     if (err) {
-      return console.error(err);
+      return debug(err);
     } else {
+      debug('here');
       //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
       res.format({
         html: function () {
@@ -53,7 +55,7 @@ router.route('/')
       res.send('There was a problem adding the information to the database.');
     } else {
       //level has been created
-      console.log('POST creating new level: ' + level);
+      debug('POST creating new level: ' + level);
       res.format({
         html: function () {
           // If it worked, set the header so the address bar doesn't still say /adduser
@@ -75,12 +77,12 @@ router.get('/new', function (req, res) {
 });
 
 router.param('id', function (req, res, next, id) {
-  //console.log('validating ' + id + ' exists');
+  //debug('validating ' + id + ' exists');
   //find the ID in the Database
   mongoose.model('Level').findById(id, function (err, level) {
     //if it isn't found, we are going to repond with 404
     if (err) {
-      console.log(id + ' was not found');
+      debug(id + ' was not found');
       res.status(404);
       err = new Error('Not Found');
       err.status = 404;
@@ -95,7 +97,7 @@ router.param('id', function (req, res, next, id) {
       //if it is found we continue on
     } else {
       //uncomment this next line if you want to see every JSON document response for every GET/PUT/DELETE call
-      //console.log(level);
+      //debug(level);
       // once validation is done save the new item in the req
       req.id = id;
       // go to the next thing
@@ -108,9 +110,9 @@ router.route('/:id')
 .get(function (req, res) {
   mongoose.model('Level').findById(req.id, function (err, level) {
     if (err) {
-      console.log('GET Error: There was a problem retrieving: ' + err);
+      debug('GET Error: There was a problem retrieving: ' + err);
     } else {
-      console.log('GET Retrieving ID: ' + level._id);
+      debug('GET Retrieving ID: ' + level._id);
       var levelDate = level.occurrence.toISOString();
       levelDate = levelDate.substring(0, levelDate.indexOf('T'));
       res.format({
@@ -132,10 +134,10 @@ router.get('/:id/edit', function (req, res) {
   //search for the level within Mongo
   mongoose.model('Level').findById(req.id, function (err, level) {
     if (err) {
-      console.log('GET Error: There was a problem retrieving: ' + err);
+      debug('GET Error: There was a problem retrieving: ' + err);
     } else {
       //Return the level
-      console.log('GET Retrieving ID: ' + level._id);
+      debug('GET Retrieving ID: ' + level._id);
       //format the date properly for the value to show correctly in our edit form
       var levelDate = level.occurrence.toISOString();
       levelDate = levelDate.substring(0, levelDate.indexOf('T'));
@@ -197,15 +199,15 @@ router.delete('/:id/edit', function (req, res) {
   //find level by ID
   mongoose.model('Level').findById(req.id, function (err, level) {
     if (err) {
-      return console.error(err);
+      return debug(err);
     } else {
       //remove it from Mongo
       level.remove(function (err, level) {
         if (err) {
-          return console.error(err);
+          return debug(err);
         } else {
           //Returning success messages saying it was deleted
-          console.log('DELETE removing ID: ' + level._id);
+          debug('DELETE removing ID: ' + level._id);
           res.format({
             //HTML returns us back to the main page, or you can create a success page
             html: function () {
