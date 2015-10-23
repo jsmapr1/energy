@@ -4,6 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var dateHelper = require('../middleware/date.js');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req) {
@@ -73,10 +74,9 @@ router.route('/')
 });
 
 router.get('/new', function (req, res) {
-  var currentDateTime = new Date(new Date().getTime() - 300 * 60 * 1000).toISOString().slice(0, 19);
   res.render('levels/new', {
     title: 'Add New level',
-    'current': currentDateTime
+    'current': dateHelper.currentDateTime()
   });
 });
 
