@@ -73,7 +73,11 @@ router.route('/')
 });
 
 router.get('/new', function (req, res) {
-  res.render('levels/new', { title: 'Add New level' });
+  var currentDateTime = new Date(new Date().getTime() - 300 * 60 * 1000).toISOString().slice(0, 19);
+  res.render('levels/new', {
+    title: 'Add New level',
+    'current': currentDateTime
+  });
 });
 
 router.param('id', function (req, res, next, id) {
