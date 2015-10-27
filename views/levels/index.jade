@@ -6,11 +6,18 @@ block content
     ul
         - each level, i in levels
             li
-                = level.activity
-                = level.level
-                = level.occurrence
-                = level.category
-                = level._id
+                ul
+
+                    li
+                        = level.activity
+                    li
+                        = level.level
+                    li
+                        = moment(level.occurrence).utc().format('MM/DD/YYYY h:mm A')
+                    li
+                        = level.category
+                    li 
+                        = level._id
                 form(action='/levels/#{level._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
                     input(type='hidden',value='DELETE',name='_method')
                     button(type='submit').

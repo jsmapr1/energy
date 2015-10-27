@@ -5,11 +5,10 @@ var logger = require('morgan');
 var db = require('./model/db');
 var level = require('./model/levels');
 var routes = require('./routes/index');
-var levels = require('./routes/levels');
+var levels = require('./controllers/levels');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
@@ -61,5 +60,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
+//Locals
+app.locals.moment = require('moment');
 
 module.exports = app;

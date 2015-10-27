@@ -4,6 +4,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var dateHelper = require('../middleware/date.js');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req) {
@@ -22,7 +23,6 @@ router.route('/')
     if (err) {
       return debug(err);
     } else {
-      debug('here');
       //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
       res.format({
         html: function () {
@@ -73,7 +73,10 @@ router.route('/')
 });
 
 router.get('/new', function (req, res) {
-  res.render('levels/new', { title: 'Add New level' });
+  res.render('levels/new', {
+    title: 'Add New level',
+    'current': dateHelper.currentDateTime()
+  });
 });
 
 router.param('id', function (req, res, next, id) {
@@ -113,12 +116,10 @@ router.route('/:id')
       debug('GET Error: There was a problem retrieving: ' + err);
     } else {
       debug('GET Retrieving ID: ' + level._id);
-      var levelDate = level.occurrence.toISOString();
-      levelDate = levelDate.substring(0, levelDate.indexOf('T'));
+      debug(level)
       res.format({
         html: function () {
           res.render('levels/show', {
-            'levelDate': levelDate,
             'level': level
           });
         },
@@ -139,8 +140,7 @@ router.get('/:id/edit', function (req, res) {
       //Return the level
       debug('GET Retrieving ID: ' + level._id);
       //format the date properly for the value to show correctly in our edit form
-      var levelDate = level.occurrence.toISOString();
-      levelDate = levelDate.substring(0, levelDate.indexOf('T'));
+      var levelDate = dateHelper.currentDateTime(level.occurrence);
       res.format({
         //HTML response will render the 'edit.jade' template
         html: function () {

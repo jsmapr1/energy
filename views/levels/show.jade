@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+    h1.
+         #{title}
+    ul
+        li
+            ul
+
+                li
+                    = level.activity
+                li
+                    = level.level
+                li
+                    = moment(level.occurrence).utc().format('MM/DD/YYYY h:mm A')
+                li
+                    = level.category
+                li 
+                    = level._id
