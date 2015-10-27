@@ -116,12 +116,10 @@ router.route('/:id')
       debug('GET Error: There was a problem retrieving: ' + err);
     } else {
       debug('GET Retrieving ID: ' + level._id);
-      var levelDate = level.occurrence.toISOString();
-      levelDate = levelDate.substring(0, levelDate.indexOf('T'));
+      debug(level)
       res.format({
         html: function () {
           res.render('levels/show', {
-            'levelDate': levelDate,
             'level': level
           });
         },
@@ -142,8 +140,7 @@ router.get('/:id/edit', function (req, res) {
       //Return the level
       debug('GET Retrieving ID: ' + level._id);
       //format the date properly for the value to show correctly in our edit form
-      var levelDate = level.occurrence.toISOString();
-      levelDate = levelDate.substring(0, levelDate.indexOf('T'));
+      var levelDate = dateHelper.currentDateTime(level.occurrence);
       res.format({
         //HTML response will render the 'edit.jade' template
         html: function () {
