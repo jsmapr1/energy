@@ -13,7 +13,9 @@ describe('Middleware Date Tests', () => {
     let d = new Date;
     let current = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
     let currentDate = dateHelper.currentDateTime();
-    let momentFormatted = moment(currentDate).format('MM/DD/YYYY HH:mm:ss A');
+    let momentFormatted = moment(currentDate).format('MM/DD/YYYY h:mm:ss A');
+    console.log(current)
+    console.log(momentFormatted)
     assert(current == momentFormatted);
   })
 });

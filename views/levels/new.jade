@@ -5,12 +5,17 @@ block content
         #{title}
     form#formAddBlob(name="addlevel",method="post",action="/levels")
         p Activity: 
-            input#inputActivity(type="text", placeholder="ex. Admissions Page", name="activity")
+            input#inputActivity.form-control(type="text", placeholder="ex. Admissions Page", name="activity")
         p Category: 
-            input#inputCategory(type="text", placeholder="ex. Coding", name="category")
+            select#inputCategory.form-control(type="select", placeholder="ex. Coding", name="category")
+                option('coding') Coding (non-html)
+                option('styling') Markup/Styling
+                option('tickets') Tickets
+                option('email') Email
+                option('meeting') Meetings
         p Level:
-            input#inputLevel(type="number", placeholder="1-10", name="level")
+            input#inputLevel.form-control(type="number", placeholder="1-10", name="level")
         p Occurrence: 
-            input#inputOccurrence(type="datetime-local", name="occurrence" value="#{current}")
+            input#inputOccurrence.form-control(type="datetime-local", name="occurrence" value="#{current}")
         p
             button#btnSubmit(type="submit") submit

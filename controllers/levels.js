@@ -23,7 +23,6 @@ router.route('/')
     if (err) {
       return debug(err);
     } else {
-      debug('here');
       //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
       res.format({
         html: function () {
