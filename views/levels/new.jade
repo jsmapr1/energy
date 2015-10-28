@@ -17,5 +17,7 @@ block content
             input#inputLevel.form-control(type="number", placeholder="1-10", name="level")
         p Occurrence: 
             input#inputOccurrence.form-control(type="datetime-local", name="occurrence" value="#{current}")
+        p Notes:
+            input#inputNotes.form-control(type="text", placeholder="Any notes (snack, coffee, etc)", name="notes")
         p
             button#btnSubmit(type="submit") submit

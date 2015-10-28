@@ -3,26 +3,36 @@ extends ../layout
 block content
     h1.
          #{title}
-    ul
+    table.table
+        thead
+            td Activity
+            td Level
+            td Date and Time
+            td Category
+            td Notes
+            td Delete
+            td Edit
+            td Show
+        tbody
         - each level, i in levels
-            li
-                ul
+            tr
 
-                    li
-                        = level.activity
-                    li
-                        = level.level
-                    li
-                        = moment(level.occurrence).utc().format('MM/DD/YYYY h:mm A')
-                    li
-                        = level.category
-                    li 
-                        = level._id
-                form(action='/levels/#{level._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
-                    input(type='hidden',value='DELETE',name='_method')
-                    button(type='submit').
-                        Delete
-                p 
+                td
+                    = level.activity
+                td
+                    = level.level
+                td
+                    = moment(level.occurrence).utc().format('MM/DD/YYYY h:mm A')
+                td
+                    = level.category
+                td
+                    = level.notes
+                td
+                    form(action='/levels/#{level._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+                        input(type='hidden',value='DELETE',name='_method')
+                        button(type='submit').
+                            Delete
+                td
                     a(href='/levels/#{level._id}/edit') Edit
-                p
+                td
                     a(href='/levels/#{level._id}') Show

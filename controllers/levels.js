@@ -44,11 +44,13 @@ router.route('/')
   var levelRating = req.body.level;
   var occurrence = req.body.occurrence;
   var category = req.body.category;
+  var notes = req.body.notes;
   //call the create function for our database
   mongoose.model('Level').create({
     activity: activity,
     level: levelRating,
     occurrence: occurrence,
+    notes: notes,
     category: category
   }, function (err, level) {
     if (err) {
@@ -166,6 +168,7 @@ router.put('/:id/edit', function (req, res) {
   var levelRating = req.body.level;
   var occurrence = req.body.occurrence;
   var category = req.body.category;
+  var notes = req.body.notes;
 
   //find the document by ID
   mongoose.model('Level').findById(req.id, function (err, level) {
@@ -174,7 +177,8 @@ router.put('/:id/edit', function (req, res) {
       activity: activity,
       levelRating: levelRating,
       occurrence: occurrence,
-      category: category
+      category: category,
+      notes: notes
     }, function (err, levelID) {
       if (err) {
         res.send('There was a problem updating the information to the database: ' + err);
