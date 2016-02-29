@@ -19,9 +19,12 @@ function subscribe() {
       reg.pushManager.subscribe({userVisibleOnly: true})
         .then(function(subscription) {
           isPushEnabled = true;
+          console.log(subscription.toJSON());
           var endpoint = subscription.endpoint;
-          var key = subscription.getKey('p256dh');
-          updateStatus(endpoint,key,'subscribe');
+          endpointParts = endpoint.split('/')
+          registrationId = endpointParts[len(endpointParts) - 1]
+          console.log(endpoint);
+          //updateStatus(endpoint,key,'subscribe');
         })
         .catch(function(e) {
           if (Notification.permission === 'denied') {

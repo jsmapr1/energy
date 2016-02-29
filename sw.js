@@ -4,12 +4,16 @@ self.addEventListener('click', function(){
 })
 
 self.addEventListener('push', function(event) {
-  var obj = event.data.json();
+  console.log('Received a push message', event);
 
-  if(obj.action === 'subscribe' || obj.action === 'unsubscribe') {
-      fireNotification(obj, event);
-      port.postMessage(obj);
-    } else if(obj.action === 'init' || obj.action === 'chatMsg') {
-        port.postMessage(obj);
-      } 
+  var title = 'Yay a message.';
+  var body = 'We have received a push message.';
+  var tag = 'simple-push-demo-notification-tag';
+
+  event.waitUntil(
+      self.registration.showNotification(title, {
+        body: body,
+        tag: tag
+      })
+      );
 });
