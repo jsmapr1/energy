@@ -29,6 +29,7 @@ app.use('/', routes);
 app.use('/levels', levels);
 app.use('/users', users);
 app.use('/sw.js',express.static(__dirname+'/sw.js'))
+app.use('/manifest.json',express.static(__dirname+'/manifest.json'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
