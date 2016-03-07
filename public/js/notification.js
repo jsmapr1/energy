@@ -13,6 +13,7 @@ if ('serviceWorker' in navigator) {
 } else {
   console.log('Service workers aren\'t supported in this browser.');  
 }
+
 function subscribe() {
     console.log('before subscribe');
     navigator.serviceWorker.ready.then(function(reg) {
@@ -22,8 +23,9 @@ function subscribe() {
           console.log(subscription.toJSON());
           var endpoint = subscription.endpoint;
           endpointParts = endpoint.split('/')
-          registrationId = endpointParts[len(endpointParts) - 1]
+          registrationId = endpointParts[endpointParts.length - 1]
           console.log(endpoint);
+          console.log(registrationId)
           //updateStatus(endpoint,key,'subscribe');
         })
         .catch(function(e) {

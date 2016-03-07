@@ -4,16 +4,14 @@ self.addEventListener('click', function(){
 })
 
 self.addEventListener('push', function(event) {
-  console.log('Received a push message', event);
-
-  var title = 'Yay a message.';
+  var title = 'Record your energy';
   var body = 'We have received a push message.';
   var tag = 'simple-push-demo-notification-tag';
 
   event.waitUntil(
-      self.registration.showNotification(title, {
-        body: body,
-        tag: tag
-      })
-      );
+    self.registration.showNotification(title, {
+      body: body,
+      tag: tag
+    })
+  );
 });
