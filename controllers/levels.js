@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express');
 var debug = require('debug')('energy');
 var router = express.Router();
@@ -5,6 +6,8 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var dateHelper = require('../middleware/date.js');
+var gcm = require('node-gcm');
+var config = require('../local/config');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function (req) {
@@ -18,7 +21,7 @@ router.use(methodOverride(function (req) {
 
 
 router.route('/')
-.get(function (req, res) {
+.get((req, res) => {
   mongoose.model('Level').find({}, function (err, levels) {
     if (err) {
       return debug(err);
@@ -75,6 +78,22 @@ router.route('/')
 });
 
 router.get('/new', function (req, res) {
+  res.render('levels/new', {
+    title: 'Add New level',
+    'current': dateHelper.currentDateTime()
+  });
+});
+
+router.get('/message', (req,res) => {
+
+  var message = new gcm.Message();
+  var sender = new gcm.Sender(config.gcmAPI);
+
+  sender.sendNoRetry(message, { registrationTokens: config.gcmRegistrationTokens }, function(err, response) {
+    if(err) console.error(err);
+    else    console.log(response);
+  });
+
   res.render('levels/new', {
     title: 'Add New level',
     'current': dateHelper.currentDateTime()

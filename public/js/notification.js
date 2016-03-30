@@ -26,6 +26,25 @@ function subscribe() {
           registrationId = endpointParts[endpointParts.length - 1]
           console.log(endpoint);
           console.log(registrationId)
+          window.setTimeout(()=>{
+            var request = new XMLHttpRequest();
+
+            request.open('POST', 'https://android.googleapis.com/gcm/send');
+            request.setRequestHeader('Content-Type', 'application/json');
+
+            var messageObj = {
+                                statusType: 'chatMsg',
+                                name: 'test',
+                                msg: 'test',
+                                endpoint: endpoint,
+                                registrationIds: [
+                                  registrationId
+                                ]
+                              }
+            console.log('here')
+            console.log(messageObj);
+            request.send(JSON.stringify(messageObj));
+          },1000)
           //updateStatus(endpoint,key,'subscribe');
         })
         .catch(function(e) {
@@ -36,4 +55,10 @@ function subscribe() {
           }
         });
     });
+}
+
+function unsubscribe() {
+navigator.serviceWorker.ready.then(function(reg) {
+ reg.pushManager.subscribe({userVisibleOnly: true})
+  .then(function(subscription) { subscription.unsubscribe()})})
 }

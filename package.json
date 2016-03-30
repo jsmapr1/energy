@@ -21,6 +21,10 @@
     "method-override": "^2.3.5",
     "mongoose": "^4.1.12",
     "morgan": "~1.6.1",
+    "node-gcm": "^0.14.0",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "request-promise": "^2.0.1"
   }
 }
