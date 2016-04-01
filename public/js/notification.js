@@ -1,3 +1,4 @@
+var registrationToken;
 Notification.requestPermission();
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').then(function(reg) {
@@ -15,17 +16,14 @@ if ('serviceWorker' in navigator) {
 }
 
 function subscribe() {
-    console.log('before subscribe');
     navigator.serviceWorker.ready.then(function(reg) {
       reg.pushManager.subscribe({userVisibleOnly: true})
         .then(function(subscription) {
           isPushEnabled = true;
-          console.log(subscription.toJSON());
           var endpoint = subscription.endpoint;
           endpointParts = endpoint.split('/')
           registrationId = endpointParts[endpointParts.length - 1]
-          console.log(endpoint);
-          console.log(registrationId)
+          registrationToken = registrationId;
           window.setTimeout(()=>{
             var request = new XMLHttpRequest();
 
@@ -41,8 +39,6 @@ function subscribe() {
                                   registrationId
                                 ]
                               }
-            console.log('here')
-            console.log(messageObj);
             request.send(JSON.stringify(messageObj));
           },1000)
           //updateStatus(endpoint,key,'subscribe');
@@ -61,4 +57,22 @@ function unsubscribe() {
 navigator.serviceWorker.ready.then(function(reg) {
  reg.pushManager.subscribe({userVisibleOnly: true})
   .then(function(subscription) { subscription.unsubscribe()})})
+}
+
+function sendNotification() {
+  fetch('levels/message', {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({registrationToken: registrationToken})
+  })
+    .then(function(res) {
+      return res.json();
+    })
+    .catch(function(err){
+      console.log('err');
+      console.log(err)
+    })
 }

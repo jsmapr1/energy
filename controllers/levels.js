@@ -84,19 +84,20 @@ router.get('/new', function (req, res) {
   });
 });
 
-router.get('/message', (req,res) => {
+router.post('/message', (req,res) => {
 
   var message = new gcm.Message();
   var sender = new gcm.Sender(config.gcmAPI);
 
-  sender.sendNoRetry(message, { registrationTokens: config.gcmRegistrationTokens }, function(err, response) {
-    if(err) console.error(err);
-    else    console.log(response);
-  });
-
-  res.render('levels/new', {
-    title: 'Add New level',
-    'current': dateHelper.currentDateTime()
+  sender.sendNoRetry(message, { registrationTokens: [req.body.registrationToken] }, function(err, response) {
+    if(err){
+      res.status(500).send('Something broke!');
+      return err;
+    }
+    else{
+      res.send(JSON.stringify(response));
+      return response;
+    };
   });
 });
 
