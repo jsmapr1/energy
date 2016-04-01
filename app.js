@@ -8,6 +8,7 @@ var routes = require('./routes/index');
 var levels = require('./controllers/levels');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var helmet = require('helmet');
 
 var users = require('./routes/users');
 
@@ -24,10 +25,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet());
 
 app.use('/', routes);
 app.use('/levels', levels);
 app.use('/users', users);
+app.use('/sw.js',express.static(__dirname+'/sw.js'))
+app.use('/manifest.json',express.static(__dirname+'/manifest.json'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
