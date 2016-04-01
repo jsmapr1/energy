@@ -24,25 +24,7 @@ function subscribe() {
           endpointParts = endpoint.split('/')
           registrationId = endpointParts[endpointParts.length - 1]
           registrationToken = registrationId;
-          window.setTimeout(()=>{
-            var request = new XMLHttpRequest();
-
-            request.open('POST', 'https://android.googleapis.com/gcm/send');
-            request.setRequestHeader('Content-Type', 'application/json');
-
-            var messageObj = {
-                                statusType: 'chatMsg',
-                                name: 'test',
-                                msg: 'test',
-                                endpoint: endpoint,
-                                registrationIds: [
-                                  registrationId
-                                ]
-                              }
-            request.send(JSON.stringify(messageObj));
-          },1000)
-          //updateStatus(endpoint,key,'subscribe');
-        })
+       })
         .catch(function(e) {
           if (Notification.permission === 'denied') {
             console.log('Permission for Notifications was denied');
