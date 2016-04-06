@@ -162,7 +162,6 @@ router.get('/:id/edit', (req, res) => {
 router.put('/:id/edit', (req, res) => {
   Level.findById(req.id).exec()
   .then((level) => {
-    debug(level);
     Object.assign(level, {
       activity: req.body.activity,
       level: req.body.level,
@@ -187,34 +186,24 @@ router.put('/:id/edit', (req, res) => {
   });
 });
 
-//DELETE a Level by ID
 router.delete('/:id/edit', (req, res) => {
-
-  Level.findById(req.id, (err, level) => {
-    if (err) {
+  Level.findByIdAndRemove(req.id).exec()
+  .then((level) => {
+    debug('DELETE removing ID: ' + level._id);
+    res.format({
+      html: () => {
+        res.redirect('/levels');
+      },
+      json: () => {
+        res.json({message: 'deleted',
+          item: level
+        });
+      }
+    });
+  })
+  .catch((err) => {
       return debug(err);
-    } else {
-
-      level.remove((err, level) => {
-        if (err) {
-          return debug(err);
-        } else {
-
-          debug('DELETE removing ID: ' + level._id);
-          res.format({
-            html: () => {
-              res.redirect('/levels');
-            },
-            json: () => {
-              res.json({message: 'deleted',
-                item: level
-              });
-            }
-          });
-        }
-      });
-    }
-  });
+  })
 });
 
 module.exports = router;
