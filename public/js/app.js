@@ -10414,6 +10414,28 @@
 	                             ,menuitem: menuitem
 	                             ,menu: menu};
 	};
+	Elm.Html = Elm.Html || {};
+	Elm.Html.Lazy = Elm.Html.Lazy || {};
+	Elm.Html.Lazy.make = function (_elm) {
+	   "use strict";
+	   _elm.Html = _elm.Html || {};
+	   _elm.Html.Lazy = _elm.Html.Lazy || {};
+	   if (_elm.Html.Lazy.values) return _elm.Html.Lazy.values;
+	   var _U = Elm.Native.Utils.make(_elm),
+	   $Basics = Elm.Basics.make(_elm),
+	   $Debug = Elm.Debug.make(_elm),
+	   $Html = Elm.Html.make(_elm),
+	   $List = Elm.List.make(_elm),
+	   $Maybe = Elm.Maybe.make(_elm),
+	   $Result = Elm.Result.make(_elm),
+	   $Signal = Elm.Signal.make(_elm),
+	   $VirtualDom = Elm.VirtualDom.make(_elm);
+	   var _op = {};
+	   var lazy3 = $VirtualDom.lazy3;
+	   var lazy2 = $VirtualDom.lazy2;
+	   var lazy = $VirtualDom.lazy;
+	   return _elm.Html.Lazy.values = {_op: _op,lazy: lazy,lazy2: lazy2,lazy3: lazy3};
+	};
 	Elm.StartApp = Elm.StartApp || {};
 	Elm.StartApp.make = function (_elm) {
 	   "use strict";
@@ -10482,9 +10504,11 @@
 	   $Result = Elm.Result.make(_elm),
 	   $Signal = Elm.Signal.make(_elm);
 	   var _op = {};
+	   var initialButton = {active: false};
+	   var ButtonModel = function (a) {    return {active: a};};
 	   var initialModel = {};
 	   var AppModel = {};
-	   return _elm.Models.values = {_op: _op,AppModel: AppModel,initialModel: initialModel};
+	   return _elm.Models.values = {_op: _op,AppModel: AppModel,initialModel: initialModel,ButtonModel: ButtonModel,initialButton: initialButton};
 	};
 	Elm.Update = Elm.Update || {};
 	Elm.Update.make = function (_elm) {
@@ -10515,14 +10539,22 @@
 	   $Basics = Elm.Basics.make(_elm),
 	   $Debug = Elm.Debug.make(_elm),
 	   $Html = Elm.Html.make(_elm),
+	   $Html$Lazy = Elm.Html.Lazy.make(_elm),
 	   $List = Elm.List.make(_elm),
 	   $Maybe = Elm.Maybe.make(_elm),
 	   $Models = Elm.Models.make(_elm),
 	   $Result = Elm.Result.make(_elm),
 	   $Signal = Elm.Signal.make(_elm);
 	   var _op = {};
-	   var view = F2(function (address,model) {    return A2($Html.div,_U.list([]),_U.list([$Html.text("Hello")]));});
-	   return _elm.View.values = {_op: _op,view: view};
+	   var button = F2(function (address,active) {
+	      var words = active ? "Dectivate" : "Activate";
+	      return A2($Html.div,_U.list([]),_U.list([$Html.text(words)]));
+	   });
+	   var view = F2(function (address,model) {
+	      var words = "foo";
+	      return A2($Html.div,_U.list([]),_U.list([A3($Html$Lazy.lazy2,button,address,model.active)]));
+	   });
+	   return _elm.View.values = {_op: _op,view: view,button: button};
 	};
 	Elm.Main = Elm.Main || {};
 	Elm.Main.make = function (_elm) {
@@ -10545,7 +10577,7 @@
 	   $Update = Elm.Update.make(_elm),
 	   $View = Elm.View.make(_elm);
 	   var _op = {};
-	   var init = {ctor: "_Tuple2",_0: $Models.initialModel,_1: $Effects.none};
+	   var init = {ctor: "_Tuple2",_0: $Models.initialButton,_1: $Effects.none};
 	   var app = $StartApp.start({init: init,inputs: _U.list([]),update: $Update.update,view: $View.view});
 	   var main = app.html;
 	   var runner = Elm.Native.Task.make(_elm).performSignal("runner",app.tasks);

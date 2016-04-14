@@ -5,6 +5,6 @@ import Actions exposing (..)
 import Effects exposing (Effects)
 
 
-update : Action -> AppModel -> ( AppModel, Effects Action )
+update : Action -> ButtonModel -> ( ButtonModel, Effects Action )
 update action model =
   ( model, Effects.none )

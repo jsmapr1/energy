@@ -10,12 +10,12 @@ import Update exposing (..)
 import View exposing (..)
 
 
-init : ( AppModel, Effects Action )
+init : ( ButtonModel, Effects Action )
 init =
-  ( initialModel, Effects.none )
+  ( initialButton, Effects.none )
 
 
-app : StartApp.App AppModel
+app : StartApp.App ButtonModel
 app =
   StartApp.start
     { init = init
